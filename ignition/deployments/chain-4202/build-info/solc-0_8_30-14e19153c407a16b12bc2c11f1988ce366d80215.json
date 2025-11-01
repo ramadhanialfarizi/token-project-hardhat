@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_30-14e19153c407a16b12bc2c11f1988ce366d80215",
+  "solcVersion": "0.8.30",
+  "solcLongVersion": "0.8.30+commit.73712a01",
+  "userSourceNameMap": {
+    "contracts/BasicToken.sol": "project/contracts/BasicToken.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "prague",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/BasicToken.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.30;\n\ncontract BasicToken {\n\n    // ============ STATE VARIABLES ============\n    mapping(address => uint256) public balances;\n    uint256 public totalSupply;\n\n    // ============ EVENTS ============\n    event Transfer(address indexed from, address indexed to, uint256 value);\n\n    // ============ CONSTRUCTOR ============\n    constructor(uint256 _initialSupply) {\n        // Semua token ke creator contract\n        balances[msg.sender] = _initialSupply;\n        totalSupply = _initialSupply;\n\n        // Emit transfer dari address(0) = minting\n        emit Transfer(address(0), msg.sender, _initialSupply);\n    }\n\n    // ============ PUBLIC FUNCTIONS ============\n    function transfer(address _to, uint256 _value) public returns (bool success) {\n        // 1. Validasi: punya cukup balance?\n        require(balances[msg.sender] >= _value, \"Insufficient balance\");\n\n        // 2. Validasi: recipient valid?\n        require(_to != address(0), \"Cannot transfer to zero address\");\n\n        // 3. Update balances\n        balances[msg.sender] -= _value;  // Kurangi sender\n        balances[_to] += _value;          // Tambah recipient\n\n        // 4. Emit event\n        emit Transfer(msg.sender, _to, _value);\n\n        // 5. Return success\n        return true;\n    }\n    \n    function balanceOf(address _owner) public view returns (uint256 balance) {\n        return balances[_owner];\n    }\n}"
+      }
+    }
+  }
+}
