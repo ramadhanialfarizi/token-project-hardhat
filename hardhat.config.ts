@@ -10,7 +10,7 @@ dotenv.config();
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxViemPlugin, hardhatIgnitionViemPlugin, hardhatVerify, hardhatEthers],
   solidity: {
-    version: "0.8.30",
+    version: "0.8.24",
     settings: {
       optimizer: {
         enabled: true,

@@ -12,7 +12,11 @@ contract CompleteToken {
     mapping(address => mapping(address => uint256)) public allowances;
 
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
 
     constructor(
         string memory _name,
@@ -45,7 +49,15 @@ contract CompleteToken {
         _;
     }
 
-    function transfer(address _to, uint256 _value) public validAddress(_to) hasEnoughBalance(msg.sender, _value) returns (bool) {
+    function transfer(
+        address _to,
+        uint256 _value
+    )
+        public
+        validAddress(_to)
+        hasEnoughBalance(msg.sender, _value)
+        returns (bool)
+    {
         balances[msg.sender] -= _value;
         balances[_to] += _value;
 
@@ -57,24 +69,33 @@ contract CompleteToken {
         return balances[_owner];
     }
 
-    function allowance(address _owner, address _spender) public view returns (uint256) {
+    function allowance(
+        address _owner,
+        address _spender
+    ) public view returns (uint256) {
         return allowances[_owner][_spender];
     }
 
-    function approve(address _spender, uint256 _value) public validApproveAddress(_spender) returns (bool) {
+    function approve(
+        address _spender,
+        uint256 _value
+    ) public validApproveAddress(_spender) returns (bool) {
         allowances[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
 
         return true;
     }
 
-     function transferFrom(
+    function transferFrom(
         address _from,
         address _to,
         uint256 _value
     ) public returns (bool) {
         require(balances[_from] >= _value, "Insufficient balance");
-        require(allowances[_from][msg.sender] >= _value, "Insufficient allowance");
+        require(
+            allowances[_from][msg.sender] >= _value,
+            "Insufficient allowance"
+        );
         require(_to != address(0), "Cannot transfer to zero address");
 
         balances[_from] -= _value;
@@ -86,6 +107,4 @@ contract CompleteToken {
 
         return true;
     }
-
 }
-

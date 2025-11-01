@@ -94,7 +94,7 @@ contract MintableToken {
         return true;
     }
 
-    function mint(address _to, uint256 _value) public onlyOwner returns (bool) {
+    function mint(address _to, uint256 _value) public onlyOwner {
         require(_to != address(0), "Cannot mint to zero address");
         balances[_to] += _value;
         totalSupply += _value;

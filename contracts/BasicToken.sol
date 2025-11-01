@@ -2,7 +2,6 @@
 pragma solidity ^0.8.30;
 
 contract BasicToken {
-
     mapping(address => uint256) public balances;
     uint256 public totalSupply;
 
@@ -15,7 +14,10 @@ contract BasicToken {
         emit Transfer(address(0), msg.sender, _initialSupply);
     }
 
-    function transfer(address _to, uint256 _value) public returns (bool success) {
+    function transfer(
+        address _to,
+        uint256 _value
+    ) public returns (bool success) {
         require(balances[msg.sender] >= _value, "Insufficient balance");
 
         require(_to != address(0), "Cannot transfer to zero address");
